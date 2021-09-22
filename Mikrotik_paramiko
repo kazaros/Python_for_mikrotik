@@ -1,0 +1,26 @@
+# адреса берутся из файла mikrotik_address. Можно конфигурить и смотреть вывод. Пробовал обновлять через скрипт, но много ошибок (один долго ребутается, другой 
+# тянет прошивку не из stable)
+
+import paramiko
+import socket
+from getpass import getpass
+import time
+import sys
+import os
+
+iplist = '/NETWORK_MIKROTIK/mikrotik_address'
+
+with open(iplist) as fp:
+    ip_address = [line.strip() for line in fp]
+
+for ip in ip_address:
+   ssh = paramiko.SSHClient()
+   ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+   ssh.connect(hostname=ip,username='admin', password='XXXXXXXX')
+   print(ip + '___________________________________________________')
+   stdin,stdout,stderr = ssh.exec_command('/user remove 0')
+   stdin,stdout,stderr = ssh.exec_command('/user print')
+   for line in stdout:
+       print(line.strip('\n'))
+   time.sleep(2)
+   ssh.close()
