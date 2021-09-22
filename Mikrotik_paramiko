@@ -22,5 +22,7 @@ for ip in ip_address:
    stdin,stdout,stderr = ssh.exec_command('/user print')
    for line in stdout:
        print(line.strip('\n'))
+#   stdin,stdout,stderr = ssh.exec_command('system reboot')
+#   stdin,stdout,stderr = ssh.exec_command('y')
    time.sleep(2)
    ssh.close()
