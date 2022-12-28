@@ -1,0 +1,40 @@
+#!/usr/bin/python
+# проверка wireless security-profiles
+
+import netmiko
+from netmiko import ConnectHandler
+import re
+import csv
+import os
+
+
+with open("/NETWORK_MIKROTIK/mikrotik_address") as f:
+    devices_list = f.read().splitlines()
+
+os.remove("/NETWORK_MIKROTIK/dict.csv")
+
+for devices in devices_list:
+   response = os.system("ping -c 2 " + devices)
+   if response == 0:
+      ip_address_of_device = devices
+      mikrotik_router = {
+          'device_type':'mikrotik_routeros',
+          'ip':ip_address_of_device,
+          'port': 22,
+          'username':'LOGIN+ct',
+          'password':'PASSWORD',
+      }
+      sshCli = ConnectHandler(**mikrotik_router)
+      output = sshCli.send_command('/interface wireless security-profiles export')
+      print(devices + '___________________________________________________')
+      match=re.findall(r'authentication-types=(\S+).+name=(\S+)',output)
+      for XXX in match:
+          XXX = devices + '; {}; {}'.format(*XXX)
+          print(XXX)
+          file = open("dict.csv", "a")
+          writer = csv.writer(file)
+          writer.writerow([XXX])
+          file.close()
+      sshCli.disconnect()
+   else:
+      print(devices, 'is down!')
