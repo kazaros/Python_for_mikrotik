@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# проверка wireless security-profiles
+# проверка wireless security-profiles и выкладывает в локальный csv файл для последующей фильтрации
 
 import netmiko
 from netmiko import ConnectHandler
