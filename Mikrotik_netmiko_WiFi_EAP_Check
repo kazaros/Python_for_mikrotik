@@ -11,7 +11,10 @@ import os
 with open("/NETWORK_MIKROTIK/mikrotik_address") as f:
     devices_list = f.read().splitlines()
 
-os.remove("/NETWORK_MIKROTIK/dict.csv")
+try:
+    os.remove("/NETWORK_MIKROTIK/dict.csv")
+except:
+    pass
 
 for devices in devices_list:
    response = os.system("ping -c 2 " + devices)
