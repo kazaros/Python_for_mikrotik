@@ -17,7 +17,7 @@ except:
     pass
 file = open("dict.csv", "a")
 writer = csv.writer(file)
-writer.writerow(['IP','Auth','SSID'])
+writer.writerow(['IP; Auth; SSID'])
 
 for devices in devices_list:
    response = os.system("ping -c 2 " + devices)
