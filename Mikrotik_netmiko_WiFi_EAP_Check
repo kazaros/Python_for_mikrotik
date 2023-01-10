@@ -18,6 +18,7 @@ except:
 file = open("dict.csv", "a")
 writer = csv.writer(file)
 writer.writerow(['IP; Auth; SSID'])
+file.close()
 
 for devices in devices_list:
    response = os.system("ping -c 2 " + devices)
@@ -44,3 +45,8 @@ for devices in devices_list:
       sshCli.disconnect()
    else:
       print(devices, 'is down!')
+      file = open("dict.csv", "a")
+      writer = csv.writer(file)
+      writer.writerow([devices + ';is down!'])
+      file.close()
+
